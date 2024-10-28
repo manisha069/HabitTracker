@@ -1,0 +1,61 @@
+<!-- <p>main-page works!</p> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+</head>
+<body >
+    <!-- Top Nav -->
+     <!-- TODO: header fix -->
+    <div class="topNav">
+        <div class="topNavContent">
+            <h4>Habit Tracker</h4>
+            <a>About</a>
+            <img src="./assets/images/user.png">
+        </div>
+    </div>
+
+    <!-- Add Habit and Reset Habit Buttons -->
+    <div class="mainButtons">
+        <button class="addButton" (click)="addHabit()">Add Habit</button>
+        <input placeholder="Enter Habit here..." class="habitInput" id="habitInput">
+        <button class="resetButton" (click)="resetHabit()">Reset Habit</button>
+    </div>
+    <span class="dateText" style="margin-top: 20px;" *ngIf="emptyError == true"> Error: no value entered!</span>
+
+    <!-- Date -->
+    <div *ngIf="displayNotes==true" class="dateDisplay">
+        <span class="dateText"> {{todaysDate | date:'dd.MM.yyyy ':'+0530'}} </span>
+    </div>
+
+    <!-- habit notes -->
+     <div *ngIf="displayNotes==true" class="habitsContainer">
+        <ng-container  *ngFor="let habit of habitList">
+            <div class="habitNote">
+                <div class="habitHeading">
+                    <span class="habitName"> {{ habit[0] }}</span>
+                    <!-- <img src="./assets/images/user.png"> -->
+                </div>
+                
+                <div class="buttonClass">
+                    <button class="completedButton" id="markButton" (click)="markComplete(habit)">Mark as Complete</button>
+                </div>
+             </div>
+        </ng-container>
+
+     </div>
+
+     <div *ngIf="oneComplete==true" class="progress">
+        <span>completed: {{(this.completeList.length / this.habitList.length)*100}} %</span>
+        <div class="progressBar" id="progressBar"></div>
+        <!-- <span>{{ completeList}}</span> -->
+     </div>
+    
+<!-- TODO: all font size+ style fix -->
+<!-- TODO: color pallete fix -->
+<!-- TODO: make progress bar -->
+     
+</body>
+</html>
