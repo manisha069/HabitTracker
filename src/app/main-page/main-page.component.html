@@ -10,17 +10,13 @@
     <!-- Top Nav -->
      <!-- TODO: header fix -->
     <div class="topNav">
-        <div class="topNavContent">
-            <h4>Habit Tracker</h4>
-            <a>About</a>
-            <img src="./assets/images/user.png">
-        </div>
+        <h4 class="headerLabel">Habit Tracker</h4>
     </div>
 
     <!-- Add Habit and Reset Habit Buttons -->
     <div class="mainButtons">
         <button class="addButton" (click)="addHabit()">Add Habit</button>
-        <input placeholder="Enter Habit here..." class="habitInput" id="habitInput">
+        <input placeholder="Enter Habit here..." (click)="inputFunction()" class="habitInput" id="habitInput">
         <button class="resetButton" (click)="resetHabit()">Reset Habit</button>
     </div>
     <span class="dateText" style="margin-top: 20px;" *ngIf="emptyError == true"> Error: no value entered!</span>
@@ -29,6 +25,7 @@
     <div *ngIf="displayNotes==true" class="dateDisplay">
         <span class="dateText"> {{todaysDate | date:'dd.MM.yyyy ':'+0530'}} </span>
     </div>
+    <span class="dateText" style="margin-top: 20px;" *ngIf="alreadyCompletedError == true"> Error: this habit is already completed!</span>
 
     <!-- habit notes -->
      <div *ngIf="displayNotes==true" class="habitsContainer">
@@ -40,22 +37,31 @@
                 </div>
                 
                 <div class="buttonClass">
-                    <button class="completedButton" id="markButton" (click)="markComplete(habit)">Mark as Complete</button>
+                    <button *ngIf="habit[1]==true" class="cButton" id="markButton" (click)="markComplete(habit[0], habit[1])">Completed!</button>
+                    <button *ngIf="habit[1]==false || habit[1]== null" class="markButton" id="markButton" (click)="markComplete(habit[0], habit[1])">Mark as Complete</button>
                 </div>
              </div>
         </ng-container>
 
      </div>
 
-     <div *ngIf="oneComplete==true" class="progress">
-        <span>completed: {{(this.completeList.length / this.habitList.length)*100}} %</span>
-        <div class="progressBar" id="progressBar"></div>
+     <div *ngIf="displayNotes==true" class="progress">
+     <span *ngIf="displayNotes==true">Today's Progress:   {{((this.completeList.length / this.habitList.length)*100).toFixed(2)}} %</span>
+
+        <div *ngFor="let c of completeList" class="progressBarComplete" id="progressBarC">
+            <div class="completeBox"></div>
+        </div>
+        <div *ngFor="let i of fakeArray" class="progressBarIncomplete" id="progressBarI">
+            <div class="incompleteBox"></div>
+        </div>                      
         <!-- <span>{{ completeList}}</span> -->
      </div>
     
-<!-- TODO: all font size+ style fix -->
+<!-- Todo: all font size+ style fix -->
 <!-- TODO: color pallete fix -->
-<!-- TODO: make progress bar -->
+<!-- Todo: make progress bar -->
+<!-- Todo: make progress amount not more than 100 -->
+
      
 </body>
 </html>

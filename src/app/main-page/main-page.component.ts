@@ -13,11 +13,20 @@ export class MainPageComponent {
   todaysDate:any;
   habitList:any = [];
   displayNotes:boolean = false;
-  emptyError!: boolean;
+  emptyError: boolean =false;
   completeList:any = [];
   oneComplete:boolean = false;
+  greenWidth : any;
+  greyWidth :any;
+  alreadyCompletedError:boolean = false;
+  fakeArray:any =[];
+  temp:any;
+
   ngOnInit(){
+  
+  // to display todays date.
   this.todaysDate= Date.now();
+
   if(this.habitList.length == 0 || this.habitList.length == null)
   {
     this.displayNotes = false;
@@ -26,52 +35,77 @@ export class MainPageComponent {
     this.displayNotes = true;
   }
   }
-  //todaysDate:any;
   
 
   element:any;
   val:any=null;
+
+  inputFunction(){
+    this.alreadyCompletedError =false;
+    this.emptyError= false;
+
+
+  }
   addHabit(){
+    this.alreadyCompletedError =false;
     this.element= document.getElementById("habitInput")!;
     this.val = this.element.value;
-    console.log("hhh", this.val, this.val.length);
 
     if(this.val != null && this.val != "" && this.val != '' && this.val.length != 0 && this.val.length != null)
     {
       this.emptyError= false;
       this.displayNotes = true;
-      this.habitList.push([this.val, false]);
-      console.log("hhh",  this.habitList);
+      this.habitList.push([this.val, null]);
       this.element.value="";
     }
     else{
       this.emptyError = true;
     }
-    
-
+    this.greenWidth =  this.completeList.length;
+      this.greyWidth = this.habitList.length-this.greenWidth;
+      this.fakeArray = new Array(this.greyWidth);
     }
 
   resetHabit(){
     this.habitList= [];
+    this.completeList =[];
     this.displayNotes = false;
     this.oneComplete = false;
+    this.fakeArray =[];
+    this.temp=null;
+    this.alreadyCompletedError = false;
   }
 
+  
+  markComplete(habit:string, value:boolean){
+    console.log(this.habitList);
+    console.log("inside func",habit, value);         
 
-  buttonText:any;
-  markComplete(habit:any){
-    let x = this.habitList.indexOf(habit[0]);
-    this.oneComplete = true;
-    console.log(habit, x)
-    this.habitList[x+1][1] = true;
-    this.completeList.push(habit[0]);
-    
+    this.temp = this.habitList.findIndex((x: string) => x[0] === habit);
 
-    this.buttonText = document.getElementById("markButton");
-    this.buttonText.innerHTML = "Completed!";
-    this.buttonText.style.backgroundColor = "green";
-    this.buttonText.style.color = "white";
+    if(this.habitList[this.temp][1] != false && this.habitList[this.temp][1] != true ){
 
+      console.log("inside if",habit, value);         
+      this.oneComplete = true;
+      
+      
+      this.habitList[this.temp][1] = true;
+      console.log("complete list1", this.completeList);
+
+      this.completeList.push(habit);
+      console.log("complete list2", this.completeList);
+
+      this.greenWidth =  this.completeList.length;
+      this.greyWidth = this.habitList.length-this.greenWidth;
+      console.log("green grey wid", this.greenWidth, this.greyWidth);
+      this.fakeArray = new Array(this.greyWidth);
+      console.log("habit list", this.habitList);
+
+    }
+
+    else{
+      this.alreadyCompletedError = true;
+    }
   }
 
 
